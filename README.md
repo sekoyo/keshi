@@ -34,27 +34,17 @@ What this will do:
 You should return only the data you need to keep the cache efficient. Here's a real world Node example of caching repository information from GitHub:
 
 ```js
-async function getProjectMeta(project) {
-  try {
-    const meta = await cache.resolve(
-      project.repo.id,
-      () => got.get(`https://api.github.com/repositories/${project.repo.id}`, {
-        json: true,
-        headers: {
-          Authorization: `token ${project.accessToken}`,
-        },
-      }).then(r => ({
-        name: r.body.name,
-        fullName: r.body.full_name,
-        description: r.body.description,
-      })),
-      '1 hour'
-    );
+const fetchProjectMeta = project => got.get(`https://api.github.com/repositories/${project.repo.id}`, {
+  json: true,
+  headers: {
+    Authorization: `token ${project.accessToken}`,
+  },
+}).then(r => ({ name: r.body.name, fullName: r.body.full_name }));
 
-    return {
-      ...project,
-      ...meta,
-    };
+async function resolveProjectMeta(project) {
+  try {
+    const meta = await cache.resolve(project.repo.id, fetchProjectMeta, '1 hour');
+    return { ...project, ...meta };
   } catch (e) {
     console.error(e);
     return project;
