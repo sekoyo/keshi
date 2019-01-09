@@ -43,7 +43,7 @@ const fetchProjectMeta = project => got.get(`https://api.github.com/repositories
 
 async function resolveProjectMeta(project) {
   try {
-    const meta = await cache.resolve(project.repo.id, fetchProjectMeta, '1 hour');
+    const meta = await cache.resolve(project.repo.id, fetchProjectMeta(project), '1 hour');
     return { ...project, ...meta };
   } catch (e) {
     console.error(e);
