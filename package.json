@@ -1,6 +1,6 @@
 {
   "name": "keshi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A better in-memory cache",
   "keywords": [
     "node",

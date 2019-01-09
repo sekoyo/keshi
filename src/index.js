@@ -59,7 +59,4 @@ function createCache(cleanupInterval = '5 mins') {
   return { resolve, del, clear };
 }
 
-const cache = createCache();
-cache.resolve('hello', 'world', '2 mins');
-
 module.exports = createCache;
