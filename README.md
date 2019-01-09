@@ -29,7 +29,7 @@ What this will do:
 - If called again within 30 minutes it will return the cached user.
 - If called after 30 minutes it will fetch the user again and re-cache.
 
-<h2>Cache the data you need</h2>
+<h3>Cache the data you need</h3>
 
 You should return only the data you need to keep the cache efficient. Here is a real world example of caching repository information from GitHub:
 
