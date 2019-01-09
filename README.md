@@ -32,13 +32,22 @@ What this will do:
 
 <h4>resolve(key, [value], [expiresIn])</h4>
 
-`key` | String | *Required*
+`key` &rarr; String &rarr; *Required*
 
-`value` | Mixed | *Optional*
+`value` &rarr; Any &rarr; *Optional*
+
 A function which resolves to a value, or simply a literal value.
 
-`expiresIn` | Number or String | *Optional*
+`expiresIn` &rarr; Number | String | Function &rarr; *Optional*
+
 A number in milliseconds or anything that [ms](https://www.npmjs.com/package/ms) accepts after which the value is considered expired. If no expiry is provided the item will never expire.
+
+Can also be a function (async is allowed) which returns true if the item has expired or otherwise false. e.g.
+
+```
+// Expire 50% of the time.
+const date = await cache.resolve('date', () => new Date(), () => Math.random() >= 0.5)
+```
 
 <h4>del(key)</h4>
 

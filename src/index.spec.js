@@ -36,6 +36,24 @@ describe('keshi', () => {
     }, 300);
   });
 
+  it('executes expiresIn if its a function and expires if it returns true', async () => {
+    let counter = 0;
+
+    const firstValue = cache.resolve('expiringItem', () => (++counter), () => true);
+    expect(firstValue).to.eql(0);
+    const secondValue = cache.resolve('expiringItem', () => (++counter), () => true);
+    expect(secondValue).to.eql(1);
+  });
+
+  it('executes expiresIn if its a function and does NOT expire if it returns false', async () => {
+    let counter = 0;
+
+    const firstValue = cache.resolve('expiringItem', () => (++counter), () => false);
+    expect(firstValue).to.eql(0);
+    const secondValue = cache.resolve('expiringItem', () => (++counter), () => false);
+    expect(secondValue).to.eql(0);
+  });
+
   it('can delete cached items', async () => {
     const value = await cache.resolve('hello', 'world');
     expect(value).to.be('world');

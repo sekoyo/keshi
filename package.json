@@ -1,6 +1,6 @@
 {
   "name": "keshi",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A better in-memory cache",
   "repository": "https://github.com/DominicTobias/keshi",
   "keywords": [
