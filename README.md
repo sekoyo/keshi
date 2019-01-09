@@ -43,7 +43,7 @@ async function getProjectMeta(project) {
         headers: {
           Authorization: `token ${project.accessToken}`,
         },
-      }).then(r => ({ name: r.body.name, fullName: r.body.full_name })),
+      }).then(r => ({ name: r.body.name, fullName: r.body.full_name, description: r.body.description })),
       '1 hour'
     );
 
