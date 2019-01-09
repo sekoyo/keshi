@@ -17,8 +17,6 @@ import createCache from 'keshi'
 
 <h2>Usage</h2>
 
-[Sandbox Demo](https://codesandbox.io/s/pm1xojlk1x)
-
 ```js
 const cache = createCache()
 
@@ -30,6 +28,33 @@ What this will do:
 - Fetch the user from the API as it doesn't have it in cache.
 - If called again within 30 minutes it will return the cached user.
 - If called after 30 minutes it will fetch the user again and re-cache.
+
+You should return only the data you need to keep the cache efficient. Here is a real world example of caching repository information from GitHub:
+
+```js
+async function getProjectMeta(project) {
+  try {
+    const meta = await cache.resolve(
+      project.repo.id,
+      () => got.get(`https://api.github.com/repositories/${project.repo.id}`, {
+        json: true,
+        headers: {
+          Authorization: `token ${project.accessToken}`,
+        },
+      }).then(r => ({ name: r.body.name, fullName: r.body.full_name })),
+      '1 hour'
+    );
+
+    return {
+      ...project,
+      ...meta,
+    };
+  } catch (e) {
+    console.error(e);
+    return project;
+  }
+}
+```
 
 Keshi will automatically keep memory low by cleaning up expired items.
 
