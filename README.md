@@ -40,9 +40,7 @@ async function getProjectMeta(project) {
       project.repo.id,
       () => got.get(`https://api.github.com/repositories/${project.repo.id}`, {
         json: true,
-        headers: {
-          Authorization: `token ${project.accessToken}`,
-        },
+        headers: { Authorization: `token ${project.accessToken}` },
       }).then(r => ({ name: r.body.name, fullName: r.body.full_name, description: r.body.description })),
       '1 hour'
     );
