@@ -31,6 +31,8 @@ What this will do:
 - If called again within 30 minutes it will return the cached user.
 - If called after 30 minutes it will fetch the user again and re-cache.
 
+Keshi will automatically keep memory low by cleaning up expired items.
+
 <h2>API</h2>
 
 <h4>resolve(key, [value], [expiresIn])</h4>
