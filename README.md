@@ -28,11 +28,11 @@ What this will do:
 
 ## API
 
-#### createCache()
+<h4>createCache()</h4>
 
 The default export and the function to create a cache.
 
-#### resolve(key, [value], [expiresIn])
+<h4>resolve(key, [value], [expiresIn])</h4>
 
 `key` | String | *Required*
 
