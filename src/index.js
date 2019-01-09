@@ -2,6 +2,7 @@ const ms = require('ms');
 
 function createCache(cleanupInterval = '5 mins') {
   let cache = {};
+  let intervalTickId;
 
   const isUndef = v => typeof v === 'undefined';
   const isDef = v => typeof v !== 'undefined';
@@ -60,8 +61,10 @@ function createCache(cleanupInterval = '5 mins') {
     cache = {};
   };
 
+  const stopCleanupTask = () => clearInterval(intervalTickId);
+
   if (cleanupInterval) {
-    setInterval(() => {
+    intervalTickId = setInterval(() => {
       Object.keys(cache).forEach(async (k) => {
         const expiresIn = cache[k][1];
         const hasExpired = await checkExpired(expiresIn);
@@ -72,7 +75,12 @@ function createCache(cleanupInterval = '5 mins') {
     }, ms(cleanupInterval));
   }
 
-  return { resolve, del, clear };
+  return {
+    stopCleanupTask,
+    resolve,
+    del,
+    clear,
+  };
 }
 
 module.exports = createCache;

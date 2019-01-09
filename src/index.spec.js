@@ -75,4 +75,6 @@ describe('keshi', () => {
     expect(newValue).to.be(undefined);
     expect(newValue2).to.be(undefined);
   });
+
+  after(() => cache.stopCleanupTask());
 });
