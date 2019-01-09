@@ -1,8 +1,6 @@
 # Keshi
 
-Keshi is a better in-memory cache.
-
-[Sandbox Demo](https://codesandbox.io/s/pm1xojlk1x)
+Keshi is a better in-memory cache for Node or the browser.
 
 ```js
 const createCache = require('keshi')
@@ -15,6 +13,8 @@ import createCache from 'keshi'
 ```
 
 <h2>Usage</h2>
+
+[Sandbox Demo](https://codesandbox.io/s/pm1xojlk1x)
 
 ```js
 const cache = createCache()
