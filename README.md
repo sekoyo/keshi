@@ -22,7 +22,7 @@ import createCache from 'keshi'
 ```js
 const cache = createCache()
 
-const res = await cache.resolve('user', () => fetch('https://myapi.com/user'), '30 mins')
+const user = await cache.resolve('user', () => fetch('https://myapi.com/user'), '30 mins')
 ```
 
 What this will do:
