@@ -12,7 +12,7 @@ or
 import createCache from 'keshi'
 ```
 
-## Usage
+<h2>Usage</h2>
 
 ```js
 const cache = createCache()
@@ -26,7 +26,7 @@ What this will do:
 - If called again within 30 minutes it will return the cached user.
 - If called after 30 minutes it will fetch the user again and re-cache.
 
-## API
+<h2>API</h2>
 
 <h4>createCache()</h4>
 
