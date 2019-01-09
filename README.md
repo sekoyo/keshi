@@ -1,5 +1,8 @@
 # Keshi
 
+[![Keshi on NPM](https://img.shields.io/npm/v/keshi.svg)](https://www.npmjs.com/package/keshi)
+[![Keshi on TravisCI](https://travis-ci.org/DominicTobias/keshi.svg?branch=master)](https://travis-ci.org/DominicTobias/keshi)
+
 Keshi is a better in-memory cache for Node or the browser.
 
 ```js
