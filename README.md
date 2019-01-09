@@ -42,10 +42,10 @@ A function which resolves to a value, or simply a literal value.
 `expiresIn` | Number or String | *Optional*
 A number in milliseconds or anything that [ms](https://www.npmjs.com/package/ms) accepts after which the value is considered expired. If no expiry is provided the item will never expire.
 
-#### del(key)
+<h4>del(key)</h4>
 
 Delete a cached item by key.
 
-#### clear()
+<h4>clear()</h4>
 
 Clear all cached items.
