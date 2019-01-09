@@ -58,7 +58,7 @@ async function getProjectMeta(project) {
 }
 ```
 
-Caches are ideal when dealing with rate limited external APIs (and you save on data requests), without the worries persitant data.
+Among other things caches are ideal when dealing with rate limited external APIs (and you save on data requests), without the of worries persitant data.
 
 Keshi will automatically keep memory low by cleaning up expired items.
 
