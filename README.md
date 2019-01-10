@@ -34,15 +34,13 @@ What this will do:
 You should return only the data you need to keep the cache efficient. Here's a real world Node example of caching repository information from GitHub:
 
 ```js
-const repoUrl = `https://api.github.com/repos/${user}/${repo}`;
-
 // In the browser
-const fetchProjectMeta = (user, repo) => fetch(repoUrl)
+const fetchProjectMeta = (user, repo) => fetch(`https://api.github.com/repos/${user}/${repo}`)
   .then(r => r.json())
   .then(r => ({ name: r.full_name, description: r.description }));
 
 // ...or in Node
-const fetchProjectMeta = (user, repo) => got.get(repoUrl, { json: true })
+const fetchProjectMeta = (user, repo) => got.get(`https://api.github.com/repos/${user}/${repo}`, { json: true })
   .then(r => ({ name: r.body.full_name, description: r.body.description }));
 
 // And call it
