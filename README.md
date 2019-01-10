@@ -34,22 +34,19 @@ What this will do:
 You should return only the data you need to keep the cache efficient. Here's a real world Node example of caching repository information from GitHub:
 
 ```js
-const fetchProjectMeta = project => got.get(`https://api.github.com/repositories/${project.repo.id}`, {
-  json: true,
-  headers: {
-    Authorization: `token ${project.accessToken}`,
-  },
-}).then(r => ({ name: r.body.full_name, description: r.body.description })); // Caching name and desc
+const repoUrl = `https://api.github.com/repos/${user}/${repo}`;
 
-async function resolveProjectMeta(project) {
-  try {
-    const meta = await cache.resolve(project.repo.id, fetchProjectMeta(project), '1 hour');
-    return { ...project, ...meta };
-  } catch (e) {
-    console.error(e);
-    return project;
-  }
-}
+// In the browser
+const fetchProjectMeta = (user, repo) => fetch(repoUrl)
+  .then(r => r.json())
+  .then(r => ({ name: r.full_name, description: r.description }));
+
+// ...or in Node
+const fetchProjectMeta = (user, repo) => got.get(repoUrl, { json: true })
+  .then(r => ({ name: r.body.full_name, description: r.body.description }));
+
+// And call it
+const meta = await cache.resolve(project.repo.id, fetchProjectMeta('DominicTobias', 'keshi'), '1 hour');
 ```
 
 Among other things caches are ideal when dealing with rate limited external APIs (and saving bandwidth), without the worries of persistant data.
