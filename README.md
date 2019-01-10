@@ -43,7 +43,7 @@ const fetchProjectMeta = (user, repo) => fetch(`https://api.github.com/repos/${u
 const fetchProjectMeta = (user, repo) => got.get(`https://api.github.com/repos/${user}/${repo}`, { json: true })
   .then(r => ({ name: r.body.full_name, description: r.body.description }));
 
-// And call it
+// And call it (for 1 hour it will return cached results).
 const meta = await cache.resolve('myRepo', fetchProjectMeta('DominicTobias', 'keshi'), '1 hour');
 ```
 
