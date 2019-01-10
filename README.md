@@ -31,7 +31,7 @@ What this will do:
 
 <h3>Cache the data you need</h3>
 
-You should return only the data you need to keep the cache efficient. Here's a real world Node example of caching repository information from GitHub:
+You should return only the data you need to keep the cache efficient. Here's a real world example of caching repository information from GitHub:
 
 ```js
 // In the browser
