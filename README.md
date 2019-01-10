@@ -39,7 +39,7 @@ const fetchProjectMeta = project => got.get(`https://api.github.com/repositories
   headers: {
     Authorization: `token ${project.accessToken}`,
   },
-}).then(r => ({ name: r.body.full_name, description: r.body.description }));
+}).then(r => ({ name: r.body.full_name, description: r.body.description })); // Caching name and desc
 
 async function resolveProjectMeta(project) {
   try {
