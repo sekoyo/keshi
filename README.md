@@ -44,7 +44,7 @@ const fetchProjectMeta = (user, repo) => got.get(`https://api.github.com/repos/$
   .then(r => ({ name: r.body.full_name, description: r.body.description }));
 
 // And call it
-const meta = await cache.resolve(project.repo.id, fetchProjectMeta('DominicTobias', 'keshi'), '1 hour');
+const meta = await cache.resolve('myRepo', fetchProjectMeta('DominicTobias', 'keshi'), '1 hour');
 ```
 
 Among other things caches are ideal when dealing with rate limited external APIs (and saving bandwidth), without the worries of persistant data.
