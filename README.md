@@ -47,7 +47,7 @@ const fetchProjectMeta = (user, repo) => got.get(`https://api.github.com/repos/$
 const meta = await cache.resolve('myRepo', fetchProjectMeta('DominicTobias', 'keshi'), '1 hour');
 ```
 
-Among other things caches are ideal when dealing with rate limited external APIs (and saving bandwidth), without the worries of persistant data.
+Rate limited APIs (as above), saving bandwidth, dealing with poor client network speeds, returning server responses faster are some of the reasons you might consider caching requests.
 
 Keshi will automatically keep memory low by cleaning up expired items.
 
