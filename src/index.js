@@ -55,11 +55,10 @@ function createCache(cleanupInterval = '5 mins') {
     return cachedValue;
   }
 
-  function del(key, wildcardSearch) {
-    if (wildcardSearch && key[key.length - 1] === '*') {
-      const searchStr = key.slice(0, -1);
+  function del(key, matchStart) {
+    if (matchStart) {
       Object.keys(cache).forEach((cacheKey) => {
-        if (cacheKey.indexOf(searchStr) === 0) {
+        if (cacheKey.indexOf(key) === 0) {
           delete cache[cacheKey];
         }
       });

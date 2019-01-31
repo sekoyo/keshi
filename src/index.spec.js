@@ -67,7 +67,7 @@ describe('keshi', () => {
     const projectSettingsFile = await cache.resolve('project.file.settings', 'SettingsFile');
     expect(projectName).to.be('TheProject');
     expect(projectSettingsFile).to.be('SettingsFile');
-    cache.del('project.*', true);
+    cache.del('project.', true);
     const nextProjectName = await cache.resolve('project.name');
     const nextProjectSettingsFile = await cache.resolve('project.file.settings');
     expect(nextProjectName).to.be(undefined);

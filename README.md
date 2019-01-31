@@ -72,14 +72,14 @@ Can also be a function (async is allowed) which returns true if the item has exp
 const date = await cache.resolve('date', () => new Date(), () => Math.random() >= 0.5)
 ```
 
-<h4>del(key, wildcardSearch)</h4>
+<h4>del(key, matchStart)</h4>
 
 Delete a cached item by key.
 
-You can also use wildcard(`*`) deleting to delete anything starting with a string.
+You can also delete any that start with the key by passing `true` to matchStart.
 
 ```
-cache.del('project.5c4a351f8f49cf1097394204.*', true)
+cache.del('project.5c4a351f8f49cf1097394204.', true)
 ```
 
 <h4>clear()</h4>
