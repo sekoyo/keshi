@@ -13,7 +13,7 @@ function createCache(cleanupInterval = '5 mins') {
     (isFn(exp) && await exp()) || exp < Date.now()
   );
 
-  const set = (key, value, expiresIn) => {
+  function set(key, value, expiresIn) {
     if (expiresIn) {
       if (isFn(expiresIn)) {
         cache[key] = [value, expiresIn];
@@ -27,9 +27,9 @@ function createCache(cleanupInterval = '5 mins') {
 
     cache[key] = [value];
     return value;
-  };
+  }
 
-  const resolve = async (key, value, expiresIn) => {
+  async function resolve(key, value, expiresIn) {
     if (isUndef(cache[key])) {
       if (isDef(value)) {
         const newValue = isFn(value) ? await value() : value;
@@ -53,15 +53,29 @@ function createCache(cleanupInterval = '5 mins') {
     }
 
     return cachedValue;
-  };
+  }
 
-  const del = key => delete cache[key];
+  function del(key, wildcardSearch) {
+    if (wildcardSearch && key[key.length - 1] === '*') {
+      const searchStr = key.slice(0, -1);
+      Object.keys(cache).forEach((cacheKey) => {
+        if (cacheKey.indexOf(searchStr) === 0) {
+          delete cache[cacheKey];
+        }
+      });
+      return;
+    }
 
-  const clear = () => {
+    delete cache[key];
+  }
+
+  function clear() {
     cache = {};
-  };
+  }
 
-  const stopCleanupTask = () => clearInterval(intervalTickId);
+  function stopCleanupTask() {
+    clearInterval(intervalTickId);
+  }
 
   if (cleanupInterval) {
     intervalTickId = setInterval(() => {
