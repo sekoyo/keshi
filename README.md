@@ -21,9 +21,6 @@ import createCache from 'keshi';
 const cache = createCache();
 
 const user = await cache.resolve('user', () => fetch('https://myapi.com/user').then(r => json()), '30 mins');
-
-// It's good practice to teardown your cache when it is no longer needed or the program terminates.
-cache.teardown();
 ```
 
 What this will do:
