@@ -94,7 +94,7 @@ Your cache must implement the following methods:
 
 <h4>customStorage.get(key)</h4>
 
-Returns the cache value given the key. Cache values must be returned as an `Array` of `[value, <expiresIn>]`. `expiresIn` be an ISO Date string.
+Returns the cache value given the key. Cache values must be returned as an `Array` of `[value, <expiresIn>]`. `expiresIn` is an ISO Date string.
 
 <h4>customStorage.set(key, value)</h4>
 
