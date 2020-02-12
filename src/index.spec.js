@@ -1,5 +1,6 @@
 const expect = require('expect.js');
 const createCache = require('./index');
+const InMemoryStorage = require('./InMemoryStorage');
 
 function timeout(fn, delay) {
   return new Promise((resolve, reject) => {
@@ -36,24 +37,6 @@ describe('keshi', () => {
     }, 300);
   });
 
-  it('executes expiresIn if its a function and expires if it returns true', async () => {
-    let counter = 0;
-
-    const firstValue = cache.resolve('expiringItem', () => (++counter), () => true);
-    expect(firstValue).to.eql(0);
-    const secondValue = cache.resolve('expiringItem', () => (++counter), () => true);
-    expect(secondValue).to.eql(1);
-  });
-
-  it('executes expiresIn if its a function and does NOT expire if it returns false', async () => {
-    let counter = 0;
-
-    const firstValue = cache.resolve('expiringItem', () => (++counter), () => false);
-    expect(firstValue).to.eql(0);
-    const secondValue = cache.resolve('expiringItem', () => (++counter), () => false);
-    expect(secondValue).to.eql(0);
-  });
-
   it('can delete cached items', async () => {
     const value = await cache.resolve('hello', 'world');
     expect(value).to.be('world');
@@ -88,5 +71,24 @@ describe('keshi', () => {
     expect(newValue2).to.be(undefined);
   });
 
-  after(() => cache.stopCleanupTask());
+  it('can use custom storage', async () => {
+    const customStorage = new InMemoryStorage();
+    const customCache = createCache({ customStorage });
+
+    let value;
+
+    await customCache.resolve('hello', 'world');
+    value = await customCache.resolve('hello');
+    expect(value).to.be('world');
+
+    value = await cache.resolve('hello', 'world');
+    expect(value).to.be('world');
+    cache.del('hello');
+    const nextValue = await cache.resolve('hello');
+    expect(nextValue).to.be(undefined);
+
+    customCache.teardown();
+  });
+
+  after(() => cache.teardown());
 });
