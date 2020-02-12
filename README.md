@@ -96,13 +96,19 @@ Your cache must implement the following methods:
 
 Returns the cache value given the key. Cache values must be returned as an `Array` of `[value, <expiresIn>]`. `expiresIn` is an ISO Date string.
 
+This method can be async.
+
 <h4>customStorage.set(key, value)</h4>
 
 Values set are of type `Array` in the following format: `[value, <expiresIn>]`. `expiresIn` should be an ISO Date string.
 
+This method can be async.
+
 <h4>customStorage.del(key)</h4>
 
 Removes the item specified by key from the cache.
+
+This method can be async.
 
 <h4>customStorage.keys()</h4>
 
@@ -111,3 +117,12 @@ Returns an array of cache keys.
 <h4>customStorage.clear()</h4>
 
 Clears all items from the cache.
+
+<h3>Example</h3>
+
+```js
+import { get, set, keys, del, clear } from 'idb-keyval';
+
+const customStorage = { get, set, keys, del, clear };
+const cache = createCache({ customStorage });
+```

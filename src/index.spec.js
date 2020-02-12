@@ -40,7 +40,7 @@ describe('keshi', () => {
   it('can delete cached items', async () => {
     const value = await cache.resolve('hello', 'world');
     expect(value).to.be('world');
-    cache.del('hello');
+    await cache.del('hello');
     const nextValue = await cache.resolve('hello');
     expect(nextValue).to.be(undefined);
   });
@@ -50,7 +50,7 @@ describe('keshi', () => {
     const projectSettingsFile = await cache.resolve('project.file.settings', 'SettingsFile');
     expect(projectName).to.be('TheProject');
     expect(projectSettingsFile).to.be('SettingsFile');
-    cache.del('project.', true);
+    await cache.del('project.', true);
     const nextProjectName = await cache.resolve('project.name');
     const nextProjectSettingsFile = await cache.resolve('project.file.settings');
     expect(nextProjectName).to.be(undefined);
@@ -83,7 +83,7 @@ describe('keshi', () => {
 
     value = await cache.resolve('hello', 'world');
     expect(value).to.be('world');
-    cache.del('hello');
+    await cache.del('hello');
     const nextValue = await cache.resolve('hello');
     expect(nextValue).to.be(undefined);
 

@@ -12,19 +12,20 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
 
   const checkExpired = exp => exp && new Date(exp) < Date.now();
 
-  function set(key, value, expiresIn) {
+  async function set(key, value, expiresIn) {
     if (expiresIn) {
       const expiredInMs = isNum(expiresIn) ? expiresIn : ms(expiresIn);
-      cache.set(key, [value, new Date(Date.now() + expiredInMs).toISOString()]);
+      await cache.set(key, [value, new Date(Date.now() + expiredInMs).toISOString()]);
       return value;
     }
 
-    cache.set(key, [value]);
+    await cache.set(key, [value]);
     return value;
   }
 
   async function resolve(key, value, expiresIn) {
-    if (isUndef(cache.get(key))) {
+    const cacheGet = cache.get(key);
+    if (isUndef(cacheGet)) {
       if (isDef(value)) {
         const newValue = isFn(value) ? await value() : value;
         return set(key, newValue, expiresIn);
@@ -33,7 +34,7 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
       return undefined;
     }
 
-    const [cachedValue, cachedExpiresIn] = cache.get(key);
+    const [cachedValue, cachedExpiresIn] = await cacheGet;
     const hasExpired = await checkExpired(cachedExpiresIn);
 
     if (hasExpired) {
@@ -49,9 +50,10 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
     return cachedValue;
   }
 
-  function del(key, matchStart) {
+  async function del(key, matchStart) {
     if (matchStart) {
-      cache.keys().forEach(cacheKey => {
+      const keys = await cache.keys();
+      keys.forEach(cacheKey => {
         if (cacheKey.indexOf(key) === 0) {
           cache.del(cacheKey);
         }
@@ -71,8 +73,9 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
   }
 
   if (cleanupInterval) {
-    intervalTickId = setInterval(() => {
-      cache.keys().forEach(async k => {
+    intervalTickId = setInterval(async () => {
+      const keys = await cache.keys();
+      keys.forEach(async k => {
         const expiresIn = cache[k][1];
         const hasExpired = await checkExpired(expiresIn);
         if (hasExpired) {
