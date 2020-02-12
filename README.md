@@ -64,7 +64,7 @@ Keshi will automatically keep memory low by cleaning up expired items.
 
 A function which resolves to a value, or simply a literal value.
 
-`expiresIn` &rarr; Number | String | Function &rarr; _Optional_
+`expiresIn` &rarr; Number | String &rarr; _Optional_
 
 A number in milliseconds or anything that [ms](https://www.npmjs.com/package/ms) accepts after which the value is considered expired. If no expiry is provided the item will never expire.
 
