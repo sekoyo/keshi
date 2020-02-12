@@ -24,8 +24,8 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
   }
 
   async function resolve(key, value, expiresIn) {
-    const cacheGet = cache.get(key);
-    if (isUndef(cacheGet)) {
+    const resolvedValue = await cache.get(key);
+    if (isUndef(resolvedValue)) {
       if (isDef(value)) {
         const newValue = isFn(value) ? await value() : value;
         return set(key, newValue, expiresIn);
@@ -34,7 +34,7 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
       return undefined;
     }
 
-    const [cachedValue, cachedExpiresIn] = await cacheGet;
+    const [cachedValue, cachedExpiresIn] = resolvedValue;
     const hasExpired = await checkExpired(cachedExpiresIn);
 
     if (hasExpired) {
