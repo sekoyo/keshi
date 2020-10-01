@@ -5,12 +5,12 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
   let cache = customStorage || new InMemoryStorage();
   let intervalTickId;
 
-  const isUndef = v => typeof v === 'undefined';
-  const isDef = v => typeof v !== 'undefined';
-  const isFn = v => typeof v === 'function';
-  const isNum = v => typeof v === 'number';
+  const isUndef = (v) => typeof v === 'undefined';
+  const isDef = (v) => typeof v !== 'undefined';
+  const isFn = (v) => typeof v === 'function';
+  const isNum = (v) => typeof v === 'number';
 
-  const checkExpired = exp => exp && new Date(exp) < Date.now();
+  const checkExpired = (exp) => exp && new Date(exp) < Date.now();
 
   async function set(key, value, expiresIn) {
     if (expiresIn) {
@@ -53,7 +53,7 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
   async function del(key, matchStart) {
     if (matchStart) {
       const keys = await cache.keys();
-      keys.forEach(cacheKey => {
+      keys.forEach((cacheKey) => {
         if (cacheKey.indexOf(key) === 0) {
           cache.del(cacheKey);
         }
@@ -75,8 +75,8 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
   if (cleanupInterval) {
     intervalTickId = setInterval(async () => {
       const keys = await cache.keys();
-      keys.forEach(async k => {
-        const expiresIn = cache[k][1];
+      keys.forEach(async (k) => {
+        const expiresIn = cache.get(k)[1];
         const hasExpired = await checkExpired(expiresIn);
         if (hasExpired) {
           cache.del(k);

@@ -1,3 +1,7 @@
+# 2.0.3
+
+- Fix potential crash in cleanup interval.
+
 # 2.0.0
 
 - Allow custom cache implementation.
