@@ -20,7 +20,11 @@ import createCache from 'keshi';
 ```js
 const cache = createCache();
 
-const user = await cache.resolve('user', () => fetch('https://myapi.com/user').then(r => r.json()), '30 mins');
+const user = await cache.resolve(
+  'user',
+  () => fetch('https://myapi.com/user').then((r) => r.json()),
+  '30 mins'
+);
 ```
 
 What this will do:
@@ -37,14 +41,14 @@ You should return only the data you need to keep the cache efficient. Here's a r
 // In the browser
 const fetchProjectMeta = (user, repo) =>
   fetch(`https://api.github.com/repos/${user}/${repo}`)
-    .then(r => r.json())
-    .then(r => ({ name: r.full_name, description: r.description }));
+    .then((r) => r.json())
+    .then((r) => ({ name: r.full_name, description: r.description }));
 
 // ...or in Node
 const fetchProjectMeta = (user, repo) =>
   got
     .get(`https://api.github.com/repos/${user}/${repo}`, { json: true })
-    .then(r => ({ name: r.body.full_name, description: r.body.description }));
+    .then((r) => ({ name: r.body.full_name, description: r.body.description }));
 
 // And call it (for 1 hour it will return cached results).
 const meta = await cache.resolve('myRepo', fetchProjectMeta('DominicTobias', 'keshi'), '1 hour');
@@ -114,9 +118,13 @@ This method can be async.
 
 Returns an array of cache keys.
 
+This method can be async.
+
 <h4>customStorage.clear()</h4>
 
 Clears all items from the cache.
+
+The `clear` method of the public interface will return the results of this call. You could for example return a Promise that your app can wait on before performing subsequent actions.
 
 <h3>Example</h3>
 

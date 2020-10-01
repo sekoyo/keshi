@@ -1,6 +1,6 @@
 # 2.0.3
 
-- Fix potential crash in cleanup interval.
+- Fix potential crash in cleanup interval logic.
 
 # 2.0.0
 

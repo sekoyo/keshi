@@ -65,7 +65,7 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
   }
 
   function clear() {
-    cache.clear();
+    return cache.clear();
   }
 
   function teardown() {
