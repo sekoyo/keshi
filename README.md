@@ -78,8 +78,8 @@ Delete a cached item by key.
 
 You can also delete any that start with the key by passing `true` to matchStart.
 
-```
-cache.del('project.5c4a351f8f49cf1097394204.', true)
+```js
+cache.del(`project.${projectId}.`, true)
 ```
 
 <h4>clear()</h4>
