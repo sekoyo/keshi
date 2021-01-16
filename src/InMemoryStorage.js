@@ -1,6 +1,7 @@
 function InMemoryStorage() {
   this.cache = {};
 }
+
 InMemoryStorage.prototype.get = function get(key) {
   return this.cache[key];
 };

@@ -8,6 +8,7 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
   const isUndef = (v) => typeof v === 'undefined';
   const isDef = (v) => typeof v !== 'undefined';
   const isFn = (v) => typeof v === 'function';
+  const isPromise = (v) => typeof v === 'object' && typeof v.then === 'function';
   const isNum = (v) => typeof v === 'number';
 
   const checkExpired = (exp) => exp && new Date(exp) < Date.now();
@@ -15,7 +16,12 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
   async function set(key, value, expiresIn) {
     if (expiresIn) {
       const expiredInMs = isNum(expiresIn) ? expiresIn : ms(expiresIn);
-      await cache.set(key, [value, new Date(Date.now() + expiredInMs).toISOString()]);
+      const setToStore = (resolvedValue) =>
+        cache.set(key, [
+          resolvedValue,
+          new Date(Date.now() + expiredInMs).toISOString()
+        ]);
+      isPromise(value) ? value.then(setToStore) : setToStore(value);
       return value;
     }
 
