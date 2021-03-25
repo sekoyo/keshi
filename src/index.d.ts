@@ -5,7 +5,7 @@ export interface Storage<K = IDBValidKey> {
   set<T = any>(key: K, value: [theValue: T, expiredIn?: number]): void
   keys(): K[] | Promise<K[]>
   del(key: K): void
-  clear(): void
+  clear<T = void>(): T
 }
 
 export type Duration = number | string
