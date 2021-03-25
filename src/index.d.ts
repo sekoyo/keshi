@@ -1,6 +1,8 @@
 export interface Storage<K = IDBValidKey> {
-  get<T = any>(key: K): T | undefined | Promise<T | undefined>
-  set<T = any>(key: K, value: T): void
+  get<T = any>(
+    key: K
+  ): [theValue: T, expiredIn?: number] | undefined | Promise<[theValue: T, expiredIn?: number] | undefined>
+  set<T = any>(key: K, value: [theValue: T, expiredIn?: number]): void
   keys(): K[] | Promise<K[]>
   del(key: K): void
   clear(): void

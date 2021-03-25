@@ -10,7 +10,7 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
   const isFn = v => typeof v === 'function'
   const isNum = v => typeof v === 'number'
 
-  const checkExpired = exp => exp && new Date(exp).getTime() < Date.now()
+  const checkHasExpired = exp => exp && new Date(exp).getTime() < Date.now()
 
   async function set(key, value, expiresIn) {
     if (expiresIn) {
@@ -39,7 +39,7 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
     }
 
     const [cachedValue, cachedExpiresIn] = storedValue
-    const hasExpired = await checkExpired(cachedExpiresIn)
+    const hasExpired = checkHasExpired(cachedExpiresIn)
 
     if (hasExpired) {
       // If the stored value has expired and a value was provided then save it to store
@@ -86,10 +86,13 @@ function createCache({ cleanupInterval = '5 mins', customStorage } = {}) {
     intervalTickId = setInterval(async () => {
       const keys = await cache.keys()
       keys.forEach(async k => {
-        const expiresIn = cache.get(k)[1]
-        const hasExpired = await checkExpired(expiresIn)
-        if (hasExpired) {
-          cache.del(k)
+        const value = await cache.get(k)
+        if (value) {
+          const expiresIn = value[1]
+          const hasExpired = checkHasExpired(expiresIn)
+          if (hasExpired) {
+            cache.del(k)
+          }
         }
       })
     }, ms(cleanupInterval))
