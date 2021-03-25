@@ -1,3 +1,11 @@
+# 2.0.5
+
+- Add Typescript defs. Fix second example in the Readme; `fetchProjectMeta` should have been returning a function 🤦‍♂️
+
+# 2.0.4
+
+- Ignore this release, no useful changes ;)
+
 # 2.0.3
 
 - Fix potential crash in cleanup interval logic.

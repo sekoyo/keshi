@@ -1,28 +1,25 @@
-export interface Storage {
-  get<T = any>(key: IDBValidKey): T | undefined | Promise<T | undefined>;
-  set<T = any>(key: IDBValidKey, value: T): void;
-  keys(): IDBValidKey[] | Promise<IDBValidKey[]>;
-  del(key: IDBValidKey): void;
+export interface Storage<K = IDBValidKey> {
+  get<T = any>(key: K): T | undefined | Promise<T | undefined>;
+  set<T = any>(key: K, value: T): void;
+  keys(): K[] | Promise<K[]>;
+  del(key: K): void;
   clear(): void;
 }
 
+export type Duration = number | string;
+
 export interface Options {
-  cleanupInterval?: string | number;
+  cleanupInterval?: Duration;
   customStorage?: Storage;
 }
 
-export interface Cache {
-  resolve<T = any>(
-    key: IDBValidKey,
-    value: T | (() => Promise<T>),
-    expiresIn: number | string
-  ): T;
-  del(key: IDBValidKey, matchStart: boolean): ReturnType<Storage["del"]>;
-  clear(): ReturnType<Storage["clear"]>;
+export interface Cache<K = IDBValidKey> {
+  resolve<T = any>(key: K, value: T | (() => T | Promise<T>), expiresIn?: Duration): T;
+  del(key: K, matchStart?: boolean): ReturnType<Storage['del']>;
+  clear(): ReturnType<Storage['clear']>;
   teardown(): void;
 }
 
 declare const createCache: (options: Options) => Cache;
 
 export default createCache;
-

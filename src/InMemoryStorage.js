@@ -1,21 +1,27 @@
-function InMemoryStorage() {
-  this.cache = {};
+class InMemoryStorage {
+  constructor() {
+    this.cache = new Map()
+  }
+
+  get(key) {
+    return this.cache.get(key)
+  }
+
+  set(key, value) {
+    this.cache.set(key, value)
+  }
+
+  keys() {
+    return Array.from(this.cache.keys())
+  }
+
+  del(key) {
+    this.cache.delete(key)
+  }
+
+  clear() {
+    this.cache.clear()
+  }
 }
 
-InMemoryStorage.prototype.get = function get(key) {
-  return this.cache[key];
-};
-InMemoryStorage.prototype.set = function set(key, value) {
-  this.cache[key] = value;
-};
-InMemoryStorage.prototype.keys = function keys() {
-  return Object.keys(this.cache);
-};
-InMemoryStorage.prototype.del = function del(key) {
-  delete this.cache[key];
-};
-InMemoryStorage.prototype.clear = function clear() {
-  this.cache = {};
-};
-
-module.exports = InMemoryStorage;
+module.exports = InMemoryStorage

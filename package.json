@@ -1,6 +1,6 @@
 {
   "name": "keshi",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "A better in-memory cache",
   "repository": "https://github.com/DominicTobias/keshi",
   "keywords": [
@@ -15,12 +15,13 @@
   "scripts": {
     "test": "mocha './src/**/*.spec.js'"
   },
-  "author": "Dominic Tobias <dominic.tobias@gmail.com> (https://github.com/DominicTobias)",
+  "author": "Dominic Tobias (https://github.com/DominicTobias/)",
   "license": "ISC",
   "dependencies": {
     "ms": "^2.1.3"
   },
   "devDependencies": {
+    "@types/ms": "^0.7.31",
     "eslint": "^7.18.0",
     "expect.js": "^0.3.1",
     "mocha": "^8.2.1"

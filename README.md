@@ -6,25 +6,21 @@
 Keshi is a better in-memory (or custom) cache for Node and the browser.
 
 ```js
-const createCache = require('keshi');
+const createCache = require('keshi')
 ```
 
 or
 
 ```js
-import createCache from 'keshi';
+import createCache from 'keshi'
 ```
 
 <h2>Usage</h2>
 
 ```js
-const cache = createCache();
+const cache = createCache()
 
-const user = await cache.resolve(
-  'user',
-  () => fetch('https://myapi.com/user').then((r) => r.json()),
-  '30 mins'
-);
+const user = await cache.resolve('user', () => fetch('https://myapi.com/user').then(r => r.json()), '30 mins')
 ```
 
 What this will do:
@@ -38,20 +34,22 @@ What this will do:
 You should return only the data you need to keep the cache efficient. Here's a real world example of caching repository information from GitHub:
 
 ```js
+const cache = createCache()
+
 // In the browser
-const fetchProjectMeta = (user, repo) =>
+const fetchProjectMeta = (user, repo) => () =>
   fetch(`https://api.github.com/repos/${user}/${repo}`)
-    .then((r) => r.json())
-    .then((r) => ({ name: r.full_name, description: r.description }));
+    .then(r => r.json())
+    .then(r => ({ name: r.full_name, description: r.description }))
 
 // ...or in Node
-const fetchProjectMeta = (user, repo) =>
+const fetchProjectMeta = (user, repo) => () =>
   got
     .get(`https://api.github.com/repos/${user}/${repo}`, { json: true })
-    .then((r) => ({ name: r.body.full_name, description: r.body.description }));
+    .then(r => ({ name: r.body.full_name, description: r.body.description }))
 
 // And call it (for 1 hour it will return cached results).
-const meta = await cache.resolve('myRepo', fetchProjectMeta('DominicTobias', 'keshi'), '1 hour');
+const meta = await cache.resolve('myRepo', fetchProjectMeta('DominicTobias', 'keshi'), '1 hour')
 ```
 
 Rate limited APIs (as above), saving bandwidth, dealing with poor client network speeds, returning server responses faster are some of the reasons you might consider caching requests.
@@ -60,21 +58,34 @@ Keshi will automatically keep memory low by cleaning up expired items.
 
 <h2>API</h2>
 
-<h4>resolve(key, [value], [expiresIn])</h4>
+<h3>cache.resolve(key, [value], [expiresIn])</h3>
 
-`key` &rarr; String &rarr; _Required_
+```ts
+resolve<T = any>(key: IDBValidKey, value?: T | (() => T | Promise<T>), expiresIn?: number | string) : T
+```
 
-`value` &rarr; Any &rarr; _Optional_
+#### `key: IDBValidKey`
 
-A function which resolves to a value, or simply a literal value.
+A unique key to get and set the value from the store.
 
-`expiresIn` &rarr; Number | String &rarr; _Optional_
+#### `value?: T | (() => T | Promise<T>)`
 
-A number in milliseconds or anything that [ms](https://www.npmjs.com/package/ms) accepts after which the value is considered expired. If no expiry is provided the item will never expire.
+<ol type="a">
+  <li>A simple value to set to the store in the case of no expiry (one time set).</li>
+  <li>A function that returns a value or a Promise to a value.</li>
+</ol>
 
-<h4>del(key, matchStart)</h4>
+#### `expiresIn?: number | string`
 
-Delete a cached item by key.
+A number in milliseconds or anything that [ms](https://www.npmjs.com/package/ms) accepts after which the value is considered expired. If not provided then the value will be set once and has no expiry.
+
+<h3>cache.del(key, [matchStart])</h3>
+
+#### `key: IDBValidKey`
+
+A unique key to delete the cache for OR the start of such a key (possibly matching many).
+
+#### `matchStart?: boolean`
 
 You can also delete any that start with the key by passing `true` to matchStart.
 
@@ -82,45 +93,46 @@ You can also delete any that start with the key by passing `true` to matchStart.
 cache.del(`project.${projectId}.`, true)
 ```
 
-<h4>clear()</h4>
+<h3>cache.clear()</h3>
 
-Clear all cached items.
+Clear the whole cache.
 
 <h2>Custom storage</h2>
 
 The default cache is in-memory, however the storage can be anything you like. To pass in a custom storage:
 
 ```js
-const cache = createCache({ customStorage });
+const customStorage = new MyCustomStorage()
+const cache = createCache({ customStorage })
 ```
 
 Your cache must implement the following methods:
 
-<h4>customStorage.get(key)</h4>
+<h3>customStorage.get(key)</h3>
 
 Returns the cache value given the key. Cache values must be returned as an `Array` of `[value, <expiresIn>]`. `expiresIn` is an ISO Date string.
 
 This method can be async.
 
-<h4>customStorage.set(key, value)</h4>
+<h3>customStorage.set(key, value)</h3>
 
 Values set are of type `Array` in the following format: `[value, <expiresIn>]`. `expiresIn` should be an ISO Date string.
 
 This method can be async.
 
-<h4>customStorage.del(key)</h4>
+<h3>customStorage.del(key)</h3>
 
 Removes the item specified by key from the cache.
 
 This method can be async.
 
-<h4>customStorage.keys()</h4>
+<h3>customStorage.keys()</h3>
 
 Returns an array of cache keys.
 
 This method can be async.
 
-<h4>customStorage.clear()</h4>
+<h3>customStorage.clear()</h3>
 
 Clears all items from the cache.
 
@@ -129,8 +141,8 @@ The `clear` method of the public interface will return the results of this call.
 <h3>Example</h3>
 
 ```js
-import { get, set, keys, del, clear } from 'idb-keyval';
+import { get, set, keys, del, clear } from 'idb-keyval'
 
-const customStorage = { get, set, keys, del, clear };
-const cache = createCache({ customStorage });
+const customStorage = { get, set, keys, del, clear }
+const cache = createCache({ customStorage })
 ```
