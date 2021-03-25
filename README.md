@@ -58,34 +58,30 @@ Keshi will automatically keep memory low by cleaning up expired items.
 
 <h2>API</h2>
 
-<h3>cache.resolve(key, [value], [expiresIn])</h3>
+#### `cache.resolve(key, [value], [expiresIn])`
 
-```ts
-resolve<T = any>(key: IDBValidKey, value?: T | (() => T | Promise<T>), expiresIn?: number | string) : T
-```
-
-#### `key: IDBValidKey`
+**key: IDBValidKey**
 
 A unique key to get and set the value from the store.
 
-#### `value?: T | (() => T | Promise<T>)`
+**value?: T | (() => T | Promise<T>)**
 
 <ol type="a">
   <li>A simple value to set to the store in the case of no expiry (one time set).</li>
   <li>A function that returns a value or a Promise to a value.</li>
 </ol>
 
-#### `expiresIn?: number | string`
+**expiresIn?: number | string**
 
 A number in milliseconds or anything that [ms](https://www.npmjs.com/package/ms) accepts after which the value is considered expired. If not provided then the value will be set once and has no expiry.
 
-<h3>cache.del(key, [matchStart])</h3>
+#### `cache.del(key, [matchStart])`
 
-#### `key: IDBValidKey`
+**key: IDBValidKey**
 
 A unique key to delete the cache for OR the start of such a key (possibly matching many).
 
-#### `matchStart?: boolean`
+**matchStart?: boolean**
 
 You can also delete any that start with the key by passing `true` to matchStart.
 
@@ -93,9 +89,13 @@ You can also delete any that start with the key by passing `true` to matchStart.
 cache.del(`project.${projectId}.`, true)
 ```
 
-<h3>cache.clear()</h3>
+#### `cache.clear()`
 
 Clear the whole cache.
+
+#### `cache.teardown()`
+
+A stale cache cleanup interval is running in the background unless you set `createCache({ cleanupInterval: 0 })`. If your cache doesn't last the lifetime of your application then you should call teardown.
 
 <h2>Custom storage</h2>
 
