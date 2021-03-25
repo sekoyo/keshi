@@ -60,28 +60,28 @@ Keshi will automatically keep memory low by cleaning up expired items.
 
 #### `cache.resolve(key, [value], [expiresIn])`
 
-**key: IDBValidKey**
+**key** _IDBValidKey_
 
 A unique key to get and set the value from the store.
 
-**value?: T | (() => T | Promise<T>)**
+**value?** _T | (() => T | Promise<T>)_
 
 <ol type="a">
   <li>A simple value to set to the store in the case of no expiry (one time set).</li>
   <li>A function that returns a value or a Promise to a value.</li>
 </ol>
 
-**expiresIn?: number | string**
+**expiresIn?** _number | string_
 
 A number in milliseconds or anything that [ms](https://www.npmjs.com/package/ms) accepts after which the value is considered expired. If not provided then the value will be set once and has no expiry.
 
 #### `cache.del(key, [matchStart])`
 
-**key: IDBValidKey**
+**key** _IDBValidKey_
 
 A unique key to delete the cache for OR the start of such a key (possibly matching many).
 
-**matchStart?: boolean**
+**matchStart?** _boolean_
 
 You can also delete any that start with the key by passing `true` to matchStart.
 
