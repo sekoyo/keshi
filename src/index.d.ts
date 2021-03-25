@@ -7,7 +7,7 @@ export interface Storage {
 }
 
 export interface Options {
-  cleanupInterval?: string;
+  cleanupInterval?: string | number;
   customStorage?: Storage;
 }
 
