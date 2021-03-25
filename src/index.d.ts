@@ -13,11 +13,11 @@ export interface Options {
 
 export interface Cache {
   resolve<T = any>(
-    key: string,
+    key: IDBValidKey,
     value: T | (() => Promise<T>),
     expiresIn: number | string
   ): T;
-  del(key: string, matchStart: boolean): ReturnType<Storage["del"]>;
+  del(key: IDBValidKey, matchStart: boolean): ReturnType<Storage["del"]>;
   clear(): ReturnType<Storage["clear"]>;
   teardown(): void;
 }
