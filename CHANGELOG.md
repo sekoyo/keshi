@@ -1,3 +1,7 @@
+# 2.0.7
+
+- Make `createCache` options in TS def optional.
+
 # 2.0.6
 
 - Make types more specific for what type of value is passed to `get` and `set` (an array). Technically this is a breaking change for TS users as it requires TS v4 for named tuples.
