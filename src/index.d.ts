@@ -22,6 +22,6 @@ export interface Cache<K = IDBValidKey> {
   teardown(): void
 }
 
-declare const createCache: (options: Options) => Cache
+declare const createCache: (options?: Options) => Cache
 
 export default createCache
