@@ -28,7 +28,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "prepublishOnly": "tsc && vite build"
   },
   "author": "Dominic Tobias (https://github.com/DominicTobias/)",
   "license": "ISC",
