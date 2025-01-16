@@ -1,8 +1,6 @@
 import ms from 'ms'
 
-type ValueTuple = [value: Promise<unknown>, expiresAt: number]
-
-const NO_EXPIRY = -1
+type ValueTuple = [value: Promise<unknown>, expiresAt: number | undefined]
 
 export default class Keshi {
   private cache: Map<string, ValueTuple> = new Map()
@@ -12,7 +10,7 @@ export default class Keshi {
   private cleanupTask = () => {
     const now = Date.now()
     for (const [key, [, expiresAt]] of this.cache) {
-      if (expiresAt !== NO_EXPIRY && now > expiresAt) {
+      if (expiresAt !== undefined && now > expiresAt) {
         this.cache.delete(key)
       }
     }
@@ -26,7 +24,7 @@ export default class Keshi {
   resolve<T>(
     key: string,
     getValue: () => T | Promise<T>,
-    expiresIn: number | string = NO_EXPIRY
+    expiresIn?: number | string
   ): Promise<T> {
     const now = Date.now()
     const existing = this.cache.get(key)
@@ -35,7 +33,7 @@ export default class Keshi {
       const [cachedValue, expiresAt] = existing
 
       // Check if still valid
-      if (expiresAt === NO_EXPIRY || now <= expiresAt) {
+      if (expiresAt === undefined || now <= expiresAt) {
         // Return the cached value as a promise (in case it was sync)
         return Promise.resolve(cachedValue) as Promise<T>
       } else {
@@ -45,8 +43,8 @@ export default class Keshi {
     }
 
     // Not in cache or was expired -> fetch new
-    let newExpiresAt = NO_EXPIRY
-    if (expiresIn !== NO_EXPIRY) {
+    let newExpiresAt: number | undefined = undefined
+    if (expiresIn !== undefined) {
       const duration = typeof expiresIn === 'number' ? expiresIn : ms(expiresIn)
       newExpiresAt = now + duration
     }
