@@ -1,3 +1,7 @@
+# 3.0.1
+
+- Add missing `types` field to `package.json`
+
 # 3.0.0
 
 This is a simplification and re-write.
