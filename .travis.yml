@@ -1,8 +1,0 @@
-language: node_js
-sudo: false
-node_js:
-  - '22'
-install:
-  - pnpm install
-script:
-  - pnpm test

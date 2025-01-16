@@ -1,7 +1,7 @@
 # Keshi
 
 [![Keshi on NPM](https://img.shields.io/npm/v/keshi.svg)](https://www.npmjs.com/package/keshi)
-[![Keshi on TravisCI](https://travis-ci.org/sekoyo/keshi.svg?branch=master)](https://travis-ci.org/sekoyo/keshi)
+[![CI](https://github.com/sekoyo/keshi/actions/workflows/ci.yml/badge.svg)](https://github.com/sekoyo/keshi/actions/workflows/ci.yml)
 
 Keshi is a tiny in-memory cache for Node and the browser that is especially suited to storing Promises (e.g. caching fetch requests).
 
@@ -44,8 +44,8 @@ function getCachedUser() {
   )
 }
 
-const user1 = await getCachedUser() // 1st time caches the promise and returns it
-const user2 = await getCachedUser() // 2nd time returns the first promise if within 5mins
+const user1 = await getCachedUser() // First time caches the promise and returns it
+const user2 = await getCachedUser() // Second time returns the first promise if within 5mins
 ```
 
 You can use plain values but they must still be awaited:
