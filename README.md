@@ -26,8 +26,8 @@ const user = await cache.resolve(
 What this will do:
 
 - Fetch the user from the API as it doesn't have it in cache.
-- If called again within 30 minutes it will return the cached user.
-- If called after 30 minutes it will fetch the user again and re-cache.
+- If called again within 5 minutes it will return the cached user.
+- If called after 5 minutes it will fetch the user again and re-cache.
 
 Keshi automatically cleans up expired items.
 
